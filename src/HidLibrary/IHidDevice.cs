@@ -38,6 +38,10 @@ namespace HidLibrary
         HidDeviceAttributes Attributes { get;  }
         string DevicePath { get; }
 
+        bool IsFastReadWriteEnabled { get; }
+        void EnableFastReadWrite();
+        void DisableFastReadWrite();
+
         bool MonitorDeviceEvents { get; set; }
 
         void OpenDevice();

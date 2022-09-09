@@ -60,6 +60,11 @@ namespace HidLibrary
         public HidDeviceAttributes Attributes { get { return _deviceAttributes; } }
         public string DevicePath { get { return _devicePath; } }
 
+        private bool _fastReadWrite = false;
+        public bool IsFastReadWriteEnabled { get { return _fastReadWrite; } }
+        public void EnableFastReadWrite() { _fastReadWrite = true; }
+        public void DisableFastReadWrite() { _fastReadWrite = false; }
+
         public bool MonitorDeviceEvents
         {
             get { return _monitorDeviceEvents; }
@@ -123,7 +128,7 @@ namespace HidLibrary
 
         public HidDeviceData Read(int timeout)
         {
-            if (IsConnected)
+            if (IsFastReadWriteEnabled || IsConnected)
             {
                 if (IsOpen == false) OpenDevice(_deviceReadMode, _deviceWriteMode, _deviceShareMode);
                 try
@@ -339,7 +344,7 @@ namespace HidLibrary
 
         public bool Write(byte[] data, int timeout)
         {
-            if (IsConnected)
+            if (IsFastReadWriteEnabled || IsConnected)
             {
                 if (IsOpen == false) OpenDevice(_deviceReadMode, _deviceWriteMode, _deviceShareMode);
                 try
