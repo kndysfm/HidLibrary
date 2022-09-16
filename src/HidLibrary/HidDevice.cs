@@ -5,10 +5,13 @@ using System.Threading.Tasks;
 
 namespace HidLibrary
 {
+    using InputEventHandler = ReadCallback;
+
     public class HidDevice : IHidDevice
     {
         public event InsertedEventHandler Inserted;
         public event RemovedEventHandler Removed;
+        public event InputEventHandler OnInput;
 
         private readonly string _description;
         private readonly string _devicePath;
@@ -20,8 +23,10 @@ namespace HidLibrary
         private ShareMode _deviceShareMode = ShareMode.ShareRead | ShareMode.ShareWrite;
 
         private readonly HidDeviceEventMonitor _deviceEventMonitor;
+        private readonly HidInputEventMonitor _inputEventMonitor;
 
         private bool _monitorDeviceEvents;
+        private bool _monitorInputEvents;
         protected delegate HidDeviceData ReadDelegate(int timeout);
         protected delegate HidReport ReadReportDelegate(int timeout);
         private delegate bool WriteDelegate(byte[] data, int timeout);
@@ -32,6 +37,8 @@ namespace HidLibrary
             _deviceEventMonitor = new HidDeviceEventMonitor(this);
             _deviceEventMonitor.Inserted += DeviceEventMonitorInserted;
             _deviceEventMonitor.Removed += DeviceEventMonitorRemoved;
+            _inputEventMonitor = new HidInputEventMonitor(this);
+            _inputEventMonitor.OnInput += InputEventMonitorOnInput;
 
             _devicePath = devicePath;
             _description = description;
@@ -70,8 +77,18 @@ namespace HidLibrary
             get { return _monitorDeviceEvents; }
             set
             {
-                if (value & _monitorDeviceEvents == false) _deviceEventMonitor.Init();
+                if (value && !_monitorDeviceEvents) _deviceEventMonitor.Init();
                 _monitorDeviceEvents = value;
+            }
+        }
+
+        public bool MonitorInputEvents
+        {
+            get { return _monitorInputEvents; }
+            set
+            {
+                if (value && !_monitorInputEvents) _inputEventMonitor.Init();
+                _monitorInputEvents = value;
             }
         }
 
@@ -732,9 +749,15 @@ namespace HidLibrary
             Removed?.Invoke();
         }
 
+        private void InputEventMonitorOnInput(HidDeviceData data)
+        {
+            OnInput?.Invoke(data);
+        }
+
         public void Dispose()
         {
             if (MonitorDeviceEvents) MonitorDeviceEvents = false;
+            if (MonitorInputEvents) MonitorInputEvents = false;
             if (IsOpen) CloseDevice();
         }
     }

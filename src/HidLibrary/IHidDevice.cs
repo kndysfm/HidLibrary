@@ -28,6 +28,7 @@ namespace HidLibrary
     {
         event InsertedEventHandler Inserted;
         event RemovedEventHandler Removed;
+        event ReadCallback OnInput;
 
         IntPtr ReadHandle { get; }
         IntPtr WriteHandle { get; }
