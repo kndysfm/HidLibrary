@@ -5,6 +5,7 @@ namespace HidLibrary
 {
     public delegate void InsertedEventHandler();
     public delegate void RemovedEventHandler();
+    public delegate void InputEventHandler(HidDeviceData data);
 
     public enum DeviceMode
     {
@@ -28,7 +29,7 @@ namespace HidLibrary
     {
         event InsertedEventHandler Inserted;
         event RemovedEventHandler Removed;
-        event ReadCallback OnInput;
+        event InputEventHandler OnInput;
 
         IntPtr ReadHandle { get; }
         IntPtr WriteHandle { get; }

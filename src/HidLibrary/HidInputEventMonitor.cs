@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 
 namespace HidLibrary
 {
-    using InputEventHandler = ReadCallback;
-
     internal class HidInputEventMonitor
     {
         public event InputEventHandler OnInput;

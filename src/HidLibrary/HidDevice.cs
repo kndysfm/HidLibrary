@@ -5,8 +5,6 @@ using System.Threading.Tasks;
 
 namespace HidLibrary
 {
-    using InputEventHandler = ReadCallback;
-
     public class HidDevice : IHidDevice
     {
         public event InsertedEventHandler Inserted;
