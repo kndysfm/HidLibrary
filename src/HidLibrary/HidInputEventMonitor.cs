@@ -18,7 +18,7 @@ namespace HidLibrary
         public void Init()
         {
 #if NET20 || NET35 || NET5_0_OR_GREATER
-            Task task = Task.Factory.StartNew(() => DeviceEventMonitor());
+            Task task = Task.Factory.StartNew(() => InputEventMonitor());
 #else
             var eventMonitor = new Action(InputEventMonitor);
             eventMonitor.BeginInvoke(DisposeInputEventMonitor, eventMonitor);
