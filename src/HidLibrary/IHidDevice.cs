@@ -45,6 +45,7 @@ namespace HidLibrary
         void DisableFastReadWrite();
 
         bool MonitorDeviceEvents { get; set; }
+        bool MonitorInputEvents { get; set; }
 
         void OpenDevice();
 
