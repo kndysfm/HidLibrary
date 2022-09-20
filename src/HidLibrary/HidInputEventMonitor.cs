@@ -25,7 +25,7 @@ namespace HidLibrary
 #endif
         }
 
-        public int Timeout { get; set; } = 100;
+        public int Timeout { get; set; } = 1000;
 
         private void InputEventMonitor()
         {
@@ -37,7 +37,10 @@ namespace HidLibrary
                     OnInput(data);
                 }
             }
-            Thread.Sleep(0);
+            else
+            {
+                Thread.Sleep(Timeout);
+            }
 
             if (_device.MonitorInputEvents) Init();
         }
