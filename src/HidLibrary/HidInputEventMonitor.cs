@@ -31,14 +31,10 @@ namespace HidLibrary
         {
             if (OnInput != null)
             {
-                Thread.CurrentThread.Priority = ThreadPriority.Highest;
-                while (_device.MonitorInputEvents)
+                HidDeviceData data = _device.Read(Timeout);
+                if (data.Status == HidDeviceData.ReadStatus.Success)
                 {
-                    HidDeviceData data = _device.Read(Timeout);
-                    if (data.Status == HidDeviceData.ReadStatus.Success)
-                    {
-                        OnInput(data);
-                    }
+                    OnInput(data);
                 }
             }
             Thread.Sleep(0);
