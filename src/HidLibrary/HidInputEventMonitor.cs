@@ -25,9 +25,10 @@ namespace HidLibrary
 #endif
         }
 
+        public int Timeout { get; set; } = 100;
+
         private void InputEventMonitor()
         {
-            const int Timeout = 1;
             if (OnInput != null)
             {
                 Thread.CurrentThread.Priority = ThreadPriority.Highest;

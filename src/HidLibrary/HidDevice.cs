@@ -85,8 +85,19 @@ namespace HidLibrary
             get { return _monitorInputEvents; }
             set
             {
-                if (value && !_monitorInputEvents) _inputEventMonitor.Init();
-                _monitorInputEvents = value;
+                if (value != _monitorInputEvents)
+                {
+                    if (value)
+                    {
+                        _monitorInputEvents = true;
+                        _inputEventMonitor.Init();
+                    }
+                    else
+                    {
+                        _monitorInputEvents = false;
+                        Thread.Sleep(_inputEventMonitor.Timeout);
+                    }
+                }
             }
         }
 
