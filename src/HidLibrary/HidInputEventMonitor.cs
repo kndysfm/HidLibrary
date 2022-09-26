@@ -15,6 +15,8 @@ namespace HidLibrary
             _device = device;
         }
 
+        public bool IsMonitoring { get; private set; } = false;
+
         public void Init()
         {
 #if NET20 || NET35 || NET5_0_OR_GREATER
@@ -23,6 +25,7 @@ namespace HidLibrary
             var eventMonitor = new Action(InputEventMonitor);
             eventMonitor.BeginInvoke(DisposeInputEventMonitor, eventMonitor);
 #endif
+            IsMonitoring = true;
         }
 
         public int Timeout { get; set; } = 1000;
@@ -43,6 +46,7 @@ namespace HidLibrary
             }
 
             if (_device.MonitorInputEvents) Init();
+            else IsMonitoring = false;
         }
 
         private static void DisposeInputEventMonitor(IAsyncResult ar)

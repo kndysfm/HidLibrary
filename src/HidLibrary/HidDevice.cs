@@ -95,10 +95,16 @@ namespace HidLibrary
                     else
                     {
                         _monitorInputEvents = false;
-                        Thread.Sleep(_inputEventMonitor.Timeout);
+                        while (_inputEventMonitor.IsMonitoring) ;
                     }
                 }
             }
+        }
+
+        public int MonitorInputTimeout
+        {
+            get { return _inputEventMonitor.Timeout; }
+            set { _inputEventMonitor.Timeout = value; }
         }
 
         public override string ToString()
